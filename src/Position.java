@@ -20,7 +20,7 @@ public final class Position//Ali Zolfaghari
     
     public boolean equalsPosition( Position q )
     {
-        return x == q.getx() && y == q.gety();
+        return ( x == q.getx() && y == q.gety() );
     }
     
     public boolean isValidPosition()

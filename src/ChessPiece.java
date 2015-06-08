@@ -13,6 +13,13 @@ public abstract class ChessPiece//Dean Viner
         counter = 0;
     }
     
+    public boolean equalsPiece( ChessPiece piece )
+    {
+        return ( piece.getPosition().equalsPosition( location )
+                && piece.getColor() == team
+                && piece.getNumMoves() == counter );
+    }
+    
     public TeamColor getColor()
     {
         return team;
@@ -21,6 +28,11 @@ public abstract class ChessPiece//Dean Viner
     public int getNumMoves()
     {
         return counter;
+    }
+    
+    public void addMove()
+    {
+        counter++;
     }
     
     public Position getPosition()

@@ -10,17 +10,21 @@ import java.awt.event.*;
 public class GUI implements ActionListener
 {
     
-    private JPanel mainPanel = new JPanel( new BorderLayout( 3, 3 ) );
+    private JPanel mainPanel;
     private JButton[][] squares;
-    private JPanel board = new JPanel();
-    private JFrame frame = new JFrame( "Chess" );
+    private JPanel board;
+    private JFrame frame;
     private boolean firstSelected;
     private Position first;
     private Position second;
-    private ChessBoard Board = new ChessBoard();
+    private ChessBoard Board;
 
         public GUI()
         {
+            board = new JPanel();
+            mainPanel = new JPanel( new BorderLayout( 3, 3 ) );
+            frame = new JFrame( "Chess" );
+            Board = new ChessBoard();
             squares = new JButton[8][8];
             firstSelected = false;
             frame.setSize( 900, 900 );
@@ -62,20 +66,24 @@ public class GUI implements ActionListener
     public void display( ArrayList<ChessPiece> pieces )
     {
         for( int i = 0; i < squares.length; i++ )
+        {
             for( int j = 0; j < squares[ i ].length; j++ )
             {
                 squares[ i ][ j ].setIcon( new ImageIcon( new BufferedImage(95, 95, BufferedImage.TYPE_INT_ARGB)) );
             }
+        }
         for( int i = 0; i < pieces.size(); i++ )
         {
             squares[ 8 - pieces.get( i ).getPosition().gety() ][ pieces.get( i ).getPosition().getx() - 1 ].setIcon( new ImageIcon( pieces.get( i ).getImageName() + ".png", "" ) );
         }
         
         for( int i = 0; i < squares.length; i++ )
+        {
             for( int j = 0; j < squares[ i ].length; j++ )
             {
                 board.add( squares[ i ][ j ] );
             }
+        }
     }
     
     @Override
@@ -89,7 +97,6 @@ public class GUI implements ActionListener
                 {
                     if( squares[i][j].equals(event.getSource()))
                     {
-                        System.out.println( Board.getPiece(new Position( j+1, 8-i)) != null);
                         if( Board.getPiece(new Position( j+1, 8-i)) != null
                                 && ((Board.getPiece(new Position( j+1, 8-i)).getColor() == TeamColor.WHITE
                                 && Board.whiteTurn())
@@ -98,7 +105,6 @@ public class GUI implements ActionListener
                         {
                             first = new Position( j + 1, 8 - i);
                             firstSelected = true;
-                            System.out.println( "first");
                         }
                     }
                 }
@@ -116,7 +122,6 @@ public class GUI implements ActionListener
                         firstSelected = false;
                         Board.move( first, second );
                         display( Board.getPiecesArray() );
-                        System.out.println("move");
                     }
                 }
             }

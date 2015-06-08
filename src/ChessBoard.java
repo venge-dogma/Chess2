@@ -463,7 +463,7 @@ public class ChessBoard
         {
             for( int i = x - 1; i > 1; i-- )
             {
-                if( getPiece(new Position( i, y )) != null || inCheck( new Position( i, y)))
+                if( getPiece(new Position( i, y )) != null || inCheck( new Position( i, y), piece.getColor()))
                 {
                     break;
                 }
@@ -477,7 +477,7 @@ public class ChessBoard
             }
             for( int i = x + 1; i < 8; i++ )
             {
-                if( getPiece(new Position( i, y )) != null || inCheck( new Position( i, y)))
+                if( getPiece(new Position( i, y )) != null || inCheck( new Position( i, y), piece.getColor()))
                 {
                     break;
                 }
@@ -517,12 +517,12 @@ public class ChessBoard
             {
                 if( q.getColor() != color)
                 {
-                    if(q.getPosition().equals(new Position( x + 1, y + 1))
-                        || q.getPosition().equals(new Position( x - 1, y + 1)))
+                    if(q.getPosition().equalsPosition(new Position( x + 1, y + 1))
+                        || q.getPosition().equalsPosition(new Position( x - 1, y + 1)))
                     answer.add( q.getPosition());
                     if( q instanceof Pawn
-                            && (q.getPosition().equals( new Position( x - 1, y))
-                            || q.getPosition().equals( new Position( x + 1, y)))
+                            && (q.getPosition().equalsPosition( new Position( x - 1, y))
+                            || q.getPosition().equalsPosition( new Position( x + 1, y)))
                             &&((Pawn)q).getPassant())
                         answer.add(q.getPosition());
                         
@@ -545,14 +545,14 @@ public class ChessBoard
             {
                 if( q.getColor() != color)
                 {
-                    if(q.getPosition().equals(new Position( x + 1, y - 1))
-                        || q.getPosition().equals(new Position( x - 1, y - 1)))
+                    if(q.getPosition().equalsPosition(new Position( x + 1, y - 1))
+                        || q.getPosition().equalsPosition(new Position( x - 1, y - 1)))
                     answer.add( q.getPosition());
                     if( q instanceof Pawn
-                            && (q.getPosition().equals( new Position( x - 1, y))
-                            || q.getPosition().equals( new Position( x + 1, y)))
-                            &&((Pawn)q).getPassant())
-                        answer.add(q.getPosition());
+                        && (q.getPosition().equalsPosition( new Position( x - 1, y))
+                        || q.getPosition().equalsPosition( new Position( x + 1, y)))
+                        &&((Pawn)q).getPassant())
+                    answer.add(q.getPosition());
                 }
             }
         }
@@ -590,14 +590,17 @@ public class ChessBoard
         return newMoves;
     }
     
-    public boolean inCheck( Position Square )//Daniel Fang
+    public boolean inCheck( Position Square, TeamColor color )//Daniel Fang
     {
         for( ChessPiece x : Pieces )
         {
-            for( Position q : potentialMove(x) )
+            if( x.getColor() != color)
             {
-                if( q.equals(Square))
-                    return true;
+                for( Position q : potentialMove(x) )
+                {
+                    if( q.equalsPosition(Square))
+                        return true;
+                }
             }
         }
         return false;
@@ -607,8 +610,8 @@ public class ChessBoard
     {
         for( ChessPiece x : Pieces )
         {
-            if( x instanceof King && x.getColor() == color)
-                return inCheck( x.getPosition());
+            if( x instanceof King && x.getColor() == color )
+                return inCheck( x.getPosition(), color);
         }
         return false;
     }
@@ -678,17 +681,20 @@ public class ChessBoard
     public void move( Position original, Position newP )//Andy Chao
     {
         ChessPiece piece = getPiece(original);
-        ChessPiece checker = piece;
         TeamColor color = piece.getColor();
         if( piece != null)
         {
-            for( Position x : canMoveList(piece))
+            for( Position x : canMoveList( piece ))
             {
-                if( x.equals(newP) )
+                if( x.equalsPosition(newP) )
                 {
                     if( getPiece(newP) != null )
-                        Taken.add(Pieces.remove(getIndex(getPiece(newP))));
+                    {
+                        Pieces.remove(getIndex(getPiece(newP)));
+                    }
                     piece.setPosition(newP);
+                    piece.addMove();
+                    break;
                 }
             }
             if( piece instanceof King)
@@ -705,7 +711,7 @@ public class ChessBoard
             }
             if( piece instanceof Rook)
                 ((Rook)piece).changeCastle();
-            if( piece instanceof Pawn 
+            if( piece instanceof Pawn
                     && (newP.gety() == original.gety() + 2
                     || newP.gety() == original.gety() - 2))
                 ((Pawn)piece).setPassant(true);
@@ -715,7 +721,7 @@ public class ChessBoard
                     ((Pawn)x).setPassant(false);
             }
         }
-        if( !checker.equals(piece))
+        if( piece.getPosition().equalsPosition( newP ))
         {
             changeTurn();
         }
