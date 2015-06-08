@@ -1,4 +1,4 @@
-/*public class Game
+public class Game
 {
     public static void main( String[] args )
     {
@@ -6,4 +6,3 @@
         game.getFrame().setVisible(true);
     }
 }
-*/

@@ -66,7 +66,7 @@ public class ChessBoard
     {
         for( ChessPiece x : Pieces )
         {
-            if( x.getPosition().equals( piece ) )
+            if( x.getPosition().equalsPosition( piece ) )
                 return x;
         }
         return null;

@@ -18,6 +18,11 @@ public final class Position//Ali Zolfaghari
         return y;
     }
     
+    public boolean equalsPosition( Position q )
+    {
+        return x == q.getx() && y == q.gety();
+    }
+    
     public boolean isValidPosition()
     {
         if( x < 1 

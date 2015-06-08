@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.*;
 
 //Reference taken from Andrew Thompson http://stackoverflow.com/questions/21077322/create-a-chess-board-with-jpanel
-public class GUI
+public class GUI implements ActionListener
 {
     
     private JPanel mainPanel = new JPanel( new BorderLayout( 3, 3 ) );
@@ -45,59 +45,11 @@ public class GUI
 
             display( Board.getPiecesArray() );
 
-            class ButtonListener implements ActionListener
-            {
-                @Override
-                public void actionPerformed( ActionEvent event )
-                {
-                    if( !firstSelected )
-                    {
-                        for( int i = 0; i < 8; i++ )
-                        {
-                            for( int j = 0; j < 8; j++ )
-                            {
-                                if( squares[i][j].equals(event.getSource()))
-                                {
-                                    if( Board.getPiece(new Position( j+1, 8-i)) != null
-                                            && ((Board.getPiece(new Position( j+1, 8-i)).getColor() == TeamColor.WHITE
-                                            && Board.whiteTurn())
-                                            || (Board.getPiece(new Position( j+1, 8-i)).getColor() == TeamColor.BLACK
-                                            && !Board.whiteTurn())))
-                                    {
-                                        first = new Position( j + 1, 8 - i);
-                                        firstSelected = true;
-                                        System.out.println( "first");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for( int i = 0; i < 8; i++ )
-                        {
-                            for( int j = 0; j < 8; j++ )
-                            {
-                                if( squares[i][j].equals(event.getSource()))
-                                {
-                                    second = new Position( j + 1, 8 - i);
-                                    firstSelected = false;
-                                    Board.move( first, second );
-                                    display( Board.getPiecesArray() );
-                                    System.out.println("move");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            ActionListener listener = new ButtonListener();
             for( int i = 0; i < 8; i++)
             {
                 for( int j = 0; j < 8; j++)
                 {
-                    squares[i][j].addActionListener( listener );
+                    squares[i][j].addActionListener( this );
                 }
             }
 
@@ -124,6 +76,51 @@ public class GUI
             {
                 board.add( squares[ i ][ j ] );
             }
+    }
+    
+    @Override
+    public void actionPerformed( ActionEvent event )
+    {
+        if( !firstSelected )
+        {
+            for( int i = 0; i < 8; i++ )
+            {
+                for( int j = 0; j < 8; j++ )
+                {
+                    if( squares[i][j].equals(event.getSource()))
+                    {
+                        System.out.println( Board.getPiece(new Position( j+1, 8-i)) != null);
+                        if( Board.getPiece(new Position( j+1, 8-i)) != null
+                                && ((Board.getPiece(new Position( j+1, 8-i)).getColor() == TeamColor.WHITE
+                                && Board.whiteTurn())
+                                || (Board.getPiece(new Position( j+1, 8-i)).getColor() == TeamColor.BLACK
+                                && !Board.whiteTurn())))
+                        {
+                            first = new Position( j + 1, 8 - i);
+                            firstSelected = true;
+                            System.out.println( "first");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for( int i = 0; i < 8; i++ )
+            {
+                for( int j = 0; j < 8; j++ )
+                {
+                    if( squares[i][j].equals(event.getSource()))
+                    {
+                        second = new Position( j + 1, 8 - i);
+                        firstSelected = false;
+                        Board.move( first, second );
+                        display( Board.getPiecesArray() );
+                        System.out.println("move");
+                    }
+                }
+            }
+        }
     }
     
     //Andy Chao
