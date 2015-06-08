@@ -8,6 +8,7 @@ public class ChessBoard
     
     public ChessBoard()//Andy Chao
     {
+        Taken = new ArrayList<ChessPiece>();
         Pieces = new ArrayList<ChessPiece>(32);
         for( int i = 1; i <= 8; i++)
         {
@@ -78,37 +79,38 @@ public class ChessBoard
         
         int x = piece.getPosition().getx();
         int y = piece.getPosition().gety();
+        TeamColor color = piece.getColor();
         
         if( getPiece(new Position(x - 1, y + 2)) == null
-                || getPiece(new Position(x - 1, y + 2)).getColor() != piece.getColor())
+                || getPiece(new Position(x - 1, y + 2)).getColor() != color )
             answer.add( new Position(x - 1, y + 2));
         
         if( getPiece(new Position(x + 1, y + 2)) == null
-                || getPiece(new Position(x + 1, y + 2)).getColor() != piece.getColor())
+                || getPiece(new Position(x + 1, y + 2)).getColor() != color )
             answer.add( new Position(x + 1, y + 2));
         
         if( getPiece(new Position(x - 2, y + 1)) == null
-                || getPiece(new Position(x - 2, y + 1)).getColor() != piece.getColor())
+                || getPiece(new Position(x - 2, y + 1)).getColor() != color )
             answer.add( new Position(x - 2, y + 1));
         
         if( getPiece(new Position(x + 2, y + 1)) == null
-                || getPiece(new Position(x + 2, y + 1)).getColor() != piece.getColor())
+                || getPiece(new Position(x + 2, y + 1)).getColor() != color )
             answer.add( new Position(x + 2, y + 1));
 
         if( getPiece(new Position(x - 2, y - 1)) == null
-                || getPiece(new Position(x - 2, y - 1)).getColor() != piece.getColor())    
+                || getPiece(new Position(x - 2, y - 1)).getColor() != color )    
             answer.add( new Position(x - 2, y - 1));
 
         if( getPiece(new Position(x + 2, y - 1)) == null
-                || getPiece(new Position(x + 2, y - 1)).getColor() != piece.getColor())    
+                || getPiece(new Position(x + 2, y - 1)).getColor() != color )    
             answer.add( new Position(x + 2, y - 1));
 
         if( getPiece(new Position(x - 1, y - 2)) == null
-                || getPiece(new Position(x - 1, y - 2)).getColor() != piece.getColor())
+                || getPiece(new Position(x - 1, y - 2)).getColor() != color )
             answer.add( new Position(x - 1, y - 2));
 
         if( getPiece(new Position(x + 1, y - 2)) == null
-                || getPiece(new Position(x + 1, y - 2)).getColor() != piece.getColor())    
+                || getPiece(new Position(x + 1, y - 2)).getColor() != color )    
             answer.add( new Position(x + 1, y - 2));
         
         return updatedMoves(answer);
@@ -122,16 +124,18 @@ public class ChessBoard
         int x = piece.getPosition().getx();
         int y = piece.getPosition().gety();
         
+        TeamColor color = piece.getColor();
+        
         while( x <= 8 && y <= 8 )
         {
             if( getPiece(new Position(x + 1, y + 1)) != null
-                    && getPiece(new Position(x + 1, y + 1)).getColor() != piece.getColor())
+                && getPiece(new Position(x + 1, y + 1)).getColor() != color )
             {
                 answer.add( new Position( x + 1, y + 1));
                 break;
             }
             if( getPiece(new Position(x + 1, y + 1)) != null
-                    && getPiece(new Position(x + 1, y + 1)).getColor() == piece.getColor())
+                    && getPiece(new Position(x + 1, y + 1)).getColor() == color )
                 break;
             if( getPiece(new Position( x + 1, y + 1)) == null )
                 answer.add( new Position( x + 1, y + 1));
@@ -145,13 +149,13 @@ public class ChessBoard
         while( x <= 8 && y >= 1 )
         {
             if( getPiece(new Position(x + 1, y - 1)) != null
-                    && getPiece(new Position(x + 1, y - 1)).getColor() != piece.getColor())
+                    && getPiece(new Position(x + 1, y - 1)).getColor() != color )
             {
                 answer.add( new Position( x + 1, y - 1));
                 break;
             }
             if( getPiece(new Position(x + 1, y - 1)) != null
-                    && getPiece(new Position(x + 1, y - 1)).getColor() == piece.getColor())
+                    && getPiece(new Position(x + 1, y - 1)).getColor() == color )
                 break;
             if( getPiece(new Position( x + 1, y - 1)) == null )
                 answer.add( new Position( x + 1, y - 1));
@@ -165,13 +169,13 @@ public class ChessBoard
         while( x >= 1 && y <= 8 )
         {
             if( getPiece(new Position(x - 1, y + 1)) != null
-                    && getPiece(new Position(x - 1, y + 1)).getColor() != piece.getColor())
+                    && getPiece(new Position(x - 1, y + 1)).getColor() != color )
             {
                 answer.add( new Position( x - 1, y + 1));
                 break;
             }
             if( getPiece(new Position(x - 1, y + 1)) != null
-                    && getPiece(new Position(x - 1, y + 1)).getColor() == piece.getColor())
+                    && getPiece(new Position(x - 1, y + 1)).getColor() == color )
                 break;
             if( getPiece(new Position( x - 1, y + 1)) == null )
                 answer.add( new Position( x - 1, y + 1));
@@ -185,13 +189,13 @@ public class ChessBoard
         while( x >= 1 && y >= 1 )
         {
             if( getPiece(new Position(x - 1, y - 1)) != null
-                    && getPiece(new Position(x - 1, y - 1)).getColor() != piece.getColor())
+                    && getPiece(new Position(x - 1, y - 1)).getColor() != color )
             {
                 answer.add( new Position( x - 1, y - 1));
                 break;
             }
             if( getPiece(new Position(x - 1, y - 1)) != null
-                    && getPiece(new Position(x - 1, y - 1)).getColor() == piece.getColor())
+                    && getPiece(new Position(x - 1, y - 1)).getColor() == color )
                 break;
             if( getPiece(new Position( x - 1, y - 1)) == null )
                 answer.add( new Position( x - 1, y - 1));
@@ -506,20 +510,19 @@ public class ChessBoard
             if( getPiece( new Position( x, y + 1)) == null )
             {
                 answer.add( new Position( x, y + 1));
-            }
-            if( getPiece( new Position( x, y + 1)) == null
-                    && getPiece( new Position( x, y + 2)) == null
+                if( getPiece( new Position( x, y + 2)) == null
                     && piece.getNumMoves() == 0 )
-            {
-                answer.add( new Position( x, y + 2));
+                {
+                    answer.add( new Position( x, y + 2));
+                }
             }
             for( ChessPiece q : Pieces )
             {
                 if( q.getColor() != color)
                 {
                     if(q.getPosition().equalsPosition(new Position( x + 1, y + 1))
-                        || q.getPosition().equalsPosition(new Position( x - 1, y + 1)))
-                    answer.add( q.getPosition());
+                            || q.getPosition().equalsPosition(new Position( x - 1, y + 1)))
+                        answer.add( q.getPosition());
                     if( q instanceof Pawn
                             && (q.getPosition().equalsPosition( new Position( x - 1, y))
                             || q.getPosition().equalsPosition( new Position( x + 1, y)))
@@ -529,25 +532,25 @@ public class ChessBoard
                 }
             }
         }
-        else
+        if( color == TeamColor.BLACK)
         {
             if( getPiece( new Position( x, y - 1)) == null )
             {
                 answer.add( new Position( x, y - 1));
-            }
-            if( getPiece( new Position( x, y - 1)) == null
-                    && getPiece( new Position( x, y - 2)) == null
+                if( getPiece( new Position( x, y - 2)) == null
                     && piece.getNumMoves() == 0 )
-            {
+                {
                 answer.add( new Position( x, y - 2));
+                }
             }
+            
             for( ChessPiece q : Pieces )
             {
                 if( q.getColor() != color)
                 {
                     if(q.getPosition().equalsPosition(new Position( x + 1, y - 1))
-                        || q.getPosition().equalsPosition(new Position( x - 1, y - 1)))
-                    answer.add( q.getPosition());
+                            || q.getPosition().equalsPosition(new Position( x - 1, y - 1)))
+                        answer.add( q.getPosition());
                     if( q instanceof Pawn
                         && (q.getPosition().equalsPosition( new Position( x - 1, y))
                         || q.getPosition().equalsPosition( new Position( x + 1, y)))
@@ -624,9 +627,12 @@ public class ChessBoard
             if(x.getColor() == color && canMove(x))
                 return false;
         }
-        if( check )
-            return true;
-        return false;
+        return check;
+    }
+    
+    public ChessBoard getBoard()
+    {
+        return this;
     }
     
     public ArrayList<Position> canMoveList( ChessPiece piece )//Dean Viner
@@ -634,7 +640,7 @@ public class ChessBoard
         TeamColor color = piece.getColor();
         ArrayList<Position> answer = new ArrayList<Position>();
         
-        ChessBoard temp = this;
+        ChessBoard temp = getBoard();
         int index = getIndex(piece);
         for(Position x : potentialMove(piece))
         {
@@ -680,20 +686,23 @@ public class ChessBoard
     
     public void move( Position original, Position newP )//Andy Chao
     {
-        ChessPiece piece = getPiece(original);
-        TeamColor color = piece.getColor();
-        if( piece != null)
+        ChessPiece piece;
+        TeamColor color;
+        if( getPiece(original) != null)
         {
+            piece = getPiece(original);
+            color = piece.getColor();
             for( Position x : canMoveList( piece ))
             {
                 if( x.equalsPosition(newP) )
                 {
                     if( getPiece(newP) != null )
                     {
-                        Pieces.remove(getIndex(getPiece(newP)));
+                        Taken.add(Pieces.remove(getIndex(getPiece(newP))));
                     }
                     piece.setPosition(newP);
                     piece.addMove();
+                    changeTurn();
                     break;
                 }
             }
@@ -720,10 +729,6 @@ public class ChessBoard
                 if( x instanceof Pawn && x.getColor() != color )
                     ((Pawn)x).setPassant(false);
             }
-        }
-        if( piece.getPosition().equalsPosition( newP ))
-        {
-            changeTurn();
-        }
+        }    
     }
 }
